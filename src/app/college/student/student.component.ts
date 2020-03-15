@@ -1,7 +1,9 @@
+import { MOBPARTS } from "./mock";
+import { MobParts } from "./student-info";
 import { Component, OnInit } from "@angular/core";
 
 @Component({
-  selector: "app-products",
+  selector: "student",
   template: `
     <div class="container">
       <div class="section">
@@ -11,8 +13,18 @@ import { Component, OnInit } from "@angular/core";
 
           <!-- Empty the 'row' div -->
           <p>145 : {{ 145 | sqrt }}</p>
+          <div class="appMyStyle">
+            <button
+              class="btn waves-effect waves-light"
+              type="submit"
+              name="action"
+            >
+              Submit
+              <i class="material-icons right">send</i>
+            </button>
+          </div>
           <div align="center">
-            <b></b>
+            <b class="appMyStyle">Total Money {{ totalMoney() }}</b>
           </div>
 
           <ul>
@@ -93,6 +105,11 @@ import { Component, OnInit } from "@angular/core";
                           class="btn-floating btn-large waves-effect waves-light red"
                           ><i class="material-icons">add</i></a
                         >
+                        <input
+                          [value]="i.loan"
+                          (input)="edit($event.target.value)"
+                          [(ngModel)]="i.loan"
+                        />
                         {{ i.loan }}
                         <a
                           (click)="removeLoan(i)"
@@ -116,55 +133,32 @@ import { Component, OnInit } from "@angular/core";
   `,
   styles: []
 })
-export class ProductsComponent implements OnInit {
+export class StudentComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {}
   name = "Shivansh";
-  mobParts = [
-    {
-      sname: "Daredevil72",
-      id: 120,
-      money: 5000,
-      st: "updated",
-      type: "higherEdu",
-      DOA: "2 / 8 / 2019",
-      per: 65.9,
-      message: ["Message 1"],
-      loan: 0
-    },
-    {
-      sname: "Rambo20",
-      id: 130,
-      money: 6000,
-      st: "notupdated",
-      type: "lowerEdu",
-      DOA: "1 / 16 / 2020",
-      per: 88.5,
-      message: ["1"],
-      loan: 0
-    },
-    {
-      sname: "GhostMan22",
-      id: 140,
-      money: 8000,
-      st: "updated",
-      type: "",
-      DOA: "11 / 18 / 2017",
-      per: 0.775,
-      message: ["0"],
-      loan: 0
-    }
-  ];
+  mobParts: MobParts[] = MOBPARTS;
+  messageMapping: { [k: string]: string } = {
+    "=0": "No messages.",
+    "=1": "One message.",
+    other: "# messages."
+  };
   addLoan(i) {
     i.loan++;
   }
   removeLoan(i) {
     i.loan--;
   }
-  messageMapping: { [k: string]: string } = {
-    "=0": "No messages.",
-    "=1": "One message.",
-    other: "# messages."
-  };
+  edit(event) {
+    //console.clear();
+    console.log(event);
+  }
+  totalMoney() {
+    let sum = 0;
+    for (let i of this.mobParts) {
+      sum += i.money;
+    }
+    return sum;
+  }
 }
